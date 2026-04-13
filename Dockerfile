@@ -1,4 +1,4 @@
-FROM quay.io/astronomer/astro-runtime:12.8.0
+FROM quay.io/astronomer/astro-runtime:12.6.0
 
 # Install Python dependencies
 COPY requirements.txt .
