@@ -2,7 +2,7 @@
 Load CSV from GitHub into Snowflake
 """
 
-from airflow.sdk import dag, task
+from airflow.decorators import dag, task
 from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
 from pendulum import datetime
 import requests
@@ -18,7 +18,6 @@ import csv
     tags=["github", "csv", "snowflake"],
 )
 def github_csv_to_snowflake():
-
     # 1️⃣ Download CSV from GitHub
     @task
     def download_csv():
@@ -27,9 +26,8 @@ def github_csv_to_snowflake():
         response = requests.get(url)
         response.raise_for_status()
 
-        temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
-        temp_file.write(response.content)
-        temp_file.close()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
+            temp_file.write(response.content)
 
         return temp_file.name
 
@@ -41,9 +39,7 @@ def github_csv_to_snowflake():
         with open(csv_path, newline="") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                rows.append(
-                    f"({row['user_id']}, '{row['user_name']}')"
-                )
+                rows.append(f"({row['user_id']}, '{row['user_name']}')")
 
         return ",\n".join(rows)
 
@@ -57,7 +53,7 @@ def github_csv_to_snowflake():
             user_name STRING,
             loaded_at TIMESTAMP
         );
-        """
+        """,
     )
 
     # 4️⃣ Load data into Snowflake
@@ -69,7 +65,7 @@ def github_csv_to_snowflake():
         INSERT INTO users (user_id, user_name, loaded_at)
         VALUES
         {{ values }};
-        """
+        """,
     )
 
     csv_file = download_csv()
