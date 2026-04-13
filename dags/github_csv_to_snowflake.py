@@ -50,8 +50,7 @@ def github_csv_to_snowflake():
         sql="""
         CREATE TABLE IF NOT EXISTS users (
             user_id INT,
-            user_name STRING,
-            loaded_at TIMESTAMP
+            user_name STRING
         );
         """,
     )
