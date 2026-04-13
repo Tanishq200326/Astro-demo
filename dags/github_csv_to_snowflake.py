@@ -21,7 +21,7 @@ def github_csv_to_snowflake():
     # 1️⃣ Download CSV from GitHub
     @task
     def download_csv():
-        url = "https://raw.githubusercontent.com/Tanishq200326/Astro-demo/tree/main/data/users.csv"
+        url = "https://raw.githubusercontent.com/Tanishq200326/Astro-demo/main/data/users.csv"
 
         response = requests.get(url)
         response.raise_for_status()
