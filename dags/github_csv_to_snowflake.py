@@ -61,7 +61,7 @@ def github_csv_to_snowflake():
         conn_id="snowflake_default",
         sql="""
         {% set values = ti.xcom_pull(task_ids='parse_csv') %}
-        INSERT INTO users (user_id, user_name, loaded_at)
+        INSERT INTO users (user_id, user_name)
         VALUES
         {{ values }};
         """,
