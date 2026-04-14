@@ -34,11 +34,11 @@ def internal_stage_copy_pipeline():
         task_id="copy_internal_stage_to_table",
         conn_id="snowflake_default",
         sql="""
-        COPY INTO raw_users
+        COPY INTO raw_users (user_id, user_name)
         FROM @raw_stage
         FILE_FORMAT = (
-            TYPE = CSV
-            SKIP_HEADER = 1
+        TYPE = CSV
+        SKIP_HEADER = 1
         );
         """
     )
