@@ -1,0 +1,7 @@
+dataset:
+  name: users
+  csv_url: https://raw.githubusercontent.com/Tanishq200326/Astro-demo/main/data/users.csv
+  table: users
+  columns:
+    - user_id
+    - user_name
