@@ -21,7 +21,7 @@ def github_csv_to_snowflake():
     # 1️⃣ Download CSV from GitHub
     @task
     def download_csv():
-        url = "https://raw.githubusercontent.com/Tanishq200326/Astro-demo/tree/main/data/users.csv"
+        url = "https://raw.githubusercontent.com/Tanishq200326/Astro-demo/main/data/users.csv"
 
         response = requests.get(url)
         response.raise_for_status()
@@ -50,8 +50,7 @@ def github_csv_to_snowflake():
         sql="""
         CREATE TABLE IF NOT EXISTS users (
             user_id INT,
-            user_name STRING,
-            loaded_at TIMESTAMP
+            user_name STRING
         );
         """,
     )
@@ -62,7 +61,7 @@ def github_csv_to_snowflake():
         conn_id="snowflake_default",
         sql="""
         {% set values = ti.xcom_pull(task_ids='parse_csv') %}
-        INSERT INTO users (user_id, user_name, loaded_at)
+        INSERT INTO users (user_id, user_name)
         VALUES
         {{ values }};
         """,
